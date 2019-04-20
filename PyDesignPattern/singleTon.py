@@ -13,3 +13,4 @@ class SingleTon:
 # x = SingleTon()
 # y = SingleTon()
 # print(x == y, x is y) # True True 
+
