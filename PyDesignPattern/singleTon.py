@@ -36,4 +36,7 @@ x.state = "bad"
 print(x) # bad
 print(y) # bad
 
+print(x == y, x is y) # False False 
+
 # MyBorg对象在初始化中将 __dict__ 初始化为父类的类属性, 即两个MyBorg共享同一个 __dict__
+# 但与SingleTon实现不同的是, MyBorg对象的内存地址是不一样的
