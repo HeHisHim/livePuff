@@ -14,3 +14,26 @@ class SingleTon:
 # y = SingleTon()
 # print(x == y, x is y) # True True 
 
+class Borg:
+    _shared_state = {} # 类属性在对象中是共享的
+    def __init__(self):
+        self.__dict__ = self._shared_state
+
+class MyBorg(Borg):
+    def __init__(self):
+        Borg.__init__(self)
+        self.state = "ok"
+
+    def __str__(self):
+        return self.state
+
+x = MyBorg()
+y = MyBorg()
+print(x) # ok
+print(y) # ok
+
+x.state = "bad"
+print(x) # bad
+print(y) # bad
+
+# MyBorg对象在初始化中将 __dict__ 初始化为父类的类属性, 即两个MyBorg共享同一个 __dict__
