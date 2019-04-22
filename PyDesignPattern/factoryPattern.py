@@ -17,7 +17,7 @@ class Employee(ABC):
         pass
     
     def __str__(self):
-        return "{} - {}, {} years old {}".format(self.__class__.__name__, self.name, self.age, self.gender)
+        return "{} - {}, {} years old, {}".format(self.__class__.__name__, self.name, self.age, self.gender)
 
 class Engineer(Employee):
     def get_role(self):
@@ -32,6 +32,7 @@ class Admin(Employee):
         return "administrator"
 
 class EmployeeFactory:
+    # 根据name参数创建不同的实例
     @classmethod
     def create(cls, name, *agrs):
         name = name.lower().strip()
@@ -42,3 +43,11 @@ class EmployeeFactory:
             return Accountant(*agrs)
         elif "administrator" == name:
             return Admin(*agrs)
+
+engineer = EmployeeFactory.create("Engineering", "John", 23, "M")
+accountant = EmployeeFactory.create("Accountant", "Amy", 20, "F")
+admin = EmployeeFactory.create("administrator", "Sam", 26, "M")
+
+print(engineer)   # Engineer - John, 23 years old, M
+print(accountant) # Accountant - Amy, 20 years old, F
+print(admin)      # Admin - Sam, 26 years old, M
