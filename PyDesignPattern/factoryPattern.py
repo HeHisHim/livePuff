@@ -4,9 +4,9 @@
 通常将参数传递给工厂类的特殊方法, 即工厂方法
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
-class Employee(metaclass = ABCMeta):
+class Employee(ABC):
     def __init__(self, name, age, gender):
         self.name = name
         self.age = age
@@ -22,3 +22,23 @@ class Employee(metaclass = ABCMeta):
 class Engineer(Employee):
     def get_role(self):
         return "engineering"
+
+class Accountant(Employee):
+    def get_role(self):
+        return "accountant"
+
+class Admin(Employee):
+    def get_role(self):
+        return "administrator"
+
+class EmployeeFactory:
+    @classmethod
+    def create(cls, name, *agrs):
+        name = name.lower().strip()
+
+        if "engineering" == name:
+            return Engineer(*agrs)
+        elif "accountant" == name:
+            return Accountant(*agrs)
+        elif "administrator" == name:
+            return Admin(*agrs)
