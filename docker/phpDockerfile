@@ -1,0 +1,23 @@
+FROM centos:6
+
+MAINTAINER yoyboy/phpWebEnv
+
+RUN yum install -y httpd php php-gd php-mysql mysql mysql-server
+
+ENV MYSQL_ROOT_PASSWORD=1231230
+
+RUN echo "<?php phpinfo()?>" > /var/www/html/index.php
+
+ADD start.sh /start.sh
+
+RUN chmod +x / start.sh
+
+ADD latest.tar.gz /var/www/html
+
+COPY wp-config.php var/www/html/wordpress
+
+VOLUME [ "/var/lib/mysql" ]
+
+CMD [ "/start.sh"]
+
+EXPOSE 90 3306
