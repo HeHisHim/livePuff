@@ -20,13 +20,40 @@ class Future:
     _PENDING = "pending"
     _CANCELLED = "cancelled"
 
-    def __init__(self):
+    def __init__(self, loop = None):
+        if loop is None:
+            self._loop = get_event_loop()
+        else:
+            self._loop = loop
+        self._callbacks = []
+        self._blocking = False
+        self._result = None
         self.status = self._PENDING
+
+    def _schedule_callbacks(self):
+        # 将回调函数添加到事件队列里, 由Eventloop(run_once)运行
+        for callbasks in self._callbacks:
+            self._loop.add_ready(callbasks)
+
+        self._callbacks = []
 
     def set_result(self, result):
         # 设置Future结果, 并将Future置为finished
         self.status = self._FINISHED
         self._result = result
+        self._schedule_callbacks() # Future完成后, 添加回调到Eventloop并等待执行
+
+    def add_done_callback(self, callback, *args):
+        """
+        添加回调函数
+        """
+        # 如果status非pending, 则将callback直接加入Eventloop的事件队列中
+        # 否则, 将callback封装成Handle, 添加到 _callbacks列表里, 等待set_result被调用时处理
+        if self.done():
+            self._loop.call_soon(callback, *args)
+        else:
+            handle = Handle(callback, self._loop, *args)
+            self._callbacks.append(handle)
 
     def done(self):
         return self.status != self._PENDING
@@ -92,3 +119,8 @@ class Handle:
 
     def _run(self):
         self._callback(*self._args)
+
+
+class Task(Future):
+    def __init__(self, coro, loop = None):
+        Future.__init__(self, loop)
