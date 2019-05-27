@@ -121,6 +121,37 @@ class Handle:
         self._callback(*self._args)
 
 
+# Task继承自Future, 用来驱动协程的进行
 class Task(Future):
     def __init__(self, coro, loop = None):
         Future.__init__(self, loop)
+        self._coro = coro
+        self._loop.call_soon(self._step) # 启动协程
+
+    def _step(self, exc = None):
+        try:
+            if exc is None:
+                result = self._coro.send(None)
+            else:
+                result = self._coro.throw(exc) # 抛出异常
+        except StopIteration as identifier: # 该异常表明协程已经执行完毕, 调用set_result
+            self.set_result(identifier.value)
+        else:
+            if isinstance(result, Future):
+                if result._blocking:
+                    self._blocking = False
+                    result.add_done_callback(self._wakeup, result)
+                else:
+                    self._loop.call_soon(self._step, RuntimeError("use yield Error"))
+            elif result is None:
+                self._loop.call_soon(self._step)
+            else:
+                self._loop.call_soon(self._step, RuntimeError("Illegal return value"))
+
+    def _wakeup(self, future):
+        try:
+            future.result()
+        except Exception as identifier:
+            self._step(identifier)
+        else:
+            self._step()
