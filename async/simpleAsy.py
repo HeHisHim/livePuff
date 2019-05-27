@@ -1,6 +1,13 @@
 # https://zhuanlan.zhihu.com/p/64991670
 import collections
 
+_event_loop = None
+def get_event_loop():
+    global _event_loop
+    if not _event_loop:
+        _event_loop = Eventloop()
+    return _event_loop
+
 """
 Future
 Future本质上是一个用生成器实现的回调管理器
