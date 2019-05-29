@@ -152,6 +152,8 @@ class Task(Future):
 
     def _wakeup(self, future):
         try:
+            # .result()如果没有抛出异常, 相当于Future状态已经为finished, 可以取出返回值
+            # 所以执行 else分支, send(None), 来捕获StopIteration异常
             future.result()
         except Exception as identifier:
             self._step(identifier)
