@@ -101,6 +101,7 @@ class Eventloop:
         ntodo = len(self._ready)
         for _ in range(ntodo):
             handle = self._ready.popleft()
+            # _run()相当于执行callback
             handle._run()
 
     def run_forever(self):
@@ -131,6 +132,7 @@ class Task(Future):
     def _step(self, exc = None):
         try:
             if exc is None:
+                # 首次send(None)相当于驱动Future __iter__ 里面的yield self
                 result = self._coro.send(None)
             else:
                 result = self._coro.throw(exc) # 抛出异常
