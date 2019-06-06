@@ -30,6 +30,11 @@
 ## mongodb
 
 ## redis
+1. wget http://download.redis.io/redis-stable.tar.gz
+2. tar zxf redis-stable.tar.gz
+3. cd redis-stable
+4. make && make PREFIX=/usr/local/redis install
+5. cp redis.conf /usr/local/redis/bin
 
 ## mariadb
 ### 改源
@@ -45,10 +50,10 @@
 4. systemctl start mysqld
 5. mysql_secure_installation -- 配置
 6. 其他配置
-    * Remove anonymous users? [Y/n] <– 是否删除匿名用户，回车
+    * Remove anonymous users? [Y/n] <– 是否删除匿名用户, 回车
 
-    * Disallow root login remotely? [Y/n] <–是否禁止root远程登录,回车,
+    * Disallow root login remotely? [Y/n] <–是否禁止root远程登录, 回车,
 
-    * Remove test database and access to it? [Y/n] <– 是否删除test数据库，回车
+    * Remove test database and access to it? [Y/n] <– 是否删除test数据库, 回车
 
-    * Reload privilege tables now? [Y/n] <– 是否重新加载权限表，回车
+    * Reload privilege tables now? [Y/n] <– 是否重新加载权限表, 回车
