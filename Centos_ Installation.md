@@ -3,16 +3,16 @@
 ### The script virtualenv is installed in which is not on PATH
     export PATH="/usr/lib64/python3/bin:$PATH"
 
-### shadowsocks - (https://www.freeluffy.com/ss-server-on-vultr/)
+## shadowsocks - (https://www.freeluffy.com/ss-server-on-vultr/)
 1. wget –no-check-certificate -O shadowsocks.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks.sh
 2. chmod +x shadowsocks.sh
 3. ./shadowsocks.sh 2>&1 | tee shadowsocks.log
 
-### nginx
+## nginx
 
-### supervisor
+## supervisor
 
-### python3
+## python3
 1. yum -y groupinstall "Development tools"
 2. yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
 3. yum install libffi-devel -y
@@ -27,11 +27,11 @@
 * ModuleNotFoundError: No module named '_ctypes'
 1. yum install libffi-devel -y
 
-### mongodb
+## mongodb
 
-### redis
+## redis
 
-### mariadb
+## mariadb
 ### 改源
 1. cd /etc/yum.repos.d
 2. vi MariaDB.repo
