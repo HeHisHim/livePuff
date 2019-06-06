@@ -1,7 +1,9 @@
 ## **`Centos7 装机必备`**
 
 ### The script virtualenv is installed in which is not on PATH
-    export PATH="/usr/lib64/python3/bin:$PATH"
+    vim ~/.bashrc
+    在最后一行加上  export PATH="/usr/lib64/python3/bin:$PATH"
+    source ~/.bashrc
 
 ## shadowsocks - (https://www.freeluffy.com/ss-server-on-vultr/)
 1. wget –no-check-certificate -O shadowsocks.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks.sh
@@ -9,6 +11,14 @@
 3. ./shadowsocks.sh 2>&1 | tee shadowsocks.log
 
 ## nginx
+1. yum install -y pcre pcre-devel
+2. yum install -y zlib zlib-devel
+3. yum install -y openssl openssl-devel
+4. wget https://nginx.org/download/nginx-1.16.0.tar.gz
+5. tar -zxvf nginx-1.16.0.tar.gz / cd nginx-1.16.0
+6. ./configure
+7. make / make install
+8. whereis nginx
 
 ## supervisor
 
