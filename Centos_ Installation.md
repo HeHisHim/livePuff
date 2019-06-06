@@ -27,7 +27,20 @@
 * ModuleNotFoundError: No module named '_ctypes'
 1. yum install libffi-devel -y
 
-## mongodb
+## mongodb [https://www.mongodb.com/download-center/community] RHEL 7.0 Linux 64-bit x64
+1. wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-4.0.10.tgz
+2. tar zxf mongodb-linux-x86_64-4.0.10.tgz
+3. mkdir /usr/local/mongodb
+4. mv mongodb-linux-x86_64-4.0.10/* /usr/local/mongodb
+5. mkdir data / mkdir db
+6. mkdir logs / touch mongo.log
+7. vim mongodb.conf
+    * dbpath=/usr/local/mongodb/data/db/
+    * logpath=/usr/local/mongodb/logs/mongo.log
+    * logappend=true
+    * port=27017
+    * fork=true
+8. ./bin/mongod -f mongodb.conf
 
 ## redis
 1. wget http://download.redis.io/redis-stable.tar.gz
@@ -35,6 +48,10 @@
 3. cd redis-stable
 4. make && make PREFIX=/usr/local/redis install
 5. cp redis.conf /usr/local/redis/bin
+
+* 设置后台启动: daemonize yes
+* 设置密码: requirepass ***
+* 设置远程连接: 注释 bind
 
 ## mariadb
 ### 改源
