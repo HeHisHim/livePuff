@@ -25,4 +25,8 @@ mp.cpu_count()
 * [Example (Pool.apply()进行并行化)](./python_multiprocess.py)
 * [Example (Pool.map()进行并行化)](./python_multiprocess.py)
 * [Example (Pool.starmap()进行并行化)](./python_multiprocess.py)
+* [Example (Pool.apply_async()进行并行化)](./python_multiprocess.py)
+* [Example (Pool.map_async()进行并行化)](./python_multiprocess.py)
+* [Example (Pool.starmap_async()进行并行化)](./python_multiprocess.py)
+
 
