@@ -13,7 +13,7 @@ find . -name "xxx" | xargs rm -rf
 ```
 #### 如 find . -name "\*\_aaa\_\*" , 筛选出文件名有aaa字段的文件, 再删除
 
-### 查找目录下按时间过滤的文件
+### 查找目录下按具体时间过滤的文件
 ```linux
 ls --full-time *_jpg_* | sed -n '/2019-07-02/p'
 ```
