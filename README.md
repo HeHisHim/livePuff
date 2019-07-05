@@ -19,6 +19,11 @@ ls --full-time *_jpg_* | sed -n '/2019-07-02/p'
 ```
 #### 查询在2019年7月2号被改动的jpg文件
 
+### 查找目录下某文件的修改时间
+```linux
+ll | grep xxx
+```
+
 # git
 
 ### 使用git merge --squash合并代码(假设是将feature合并到master)
