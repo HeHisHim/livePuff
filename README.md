@@ -42,9 +42,16 @@ git status 查看有冲突的文件并解决冲突
 git add ConflictFile 添加已解决冲突的文件
 ```
 #### git提交, 推送
-```
+```git
 git commit -m "merge feature branch into master"
 git push origin master:master
 ```
 
+# MySQL
+
+### 解决A LEFT JOIN B 连接得到的新表C, 查询出来的记录总条数多于A表的记录总条数
+#### 原因是A与B的关系不是1:1或1:0, 而是1:n(n > 1)导致A对应到B产生了多条数据. 此时要先处理B中重复的数据再与A做连接
+```Mysql
+SELECT A.xid, C.yid FROM xtable AS A LEFT JOIN (SELECT B.yid FROM ytable AS B GROUP BY B.yid) AS C ON A.xid = C.yid
+```
 
