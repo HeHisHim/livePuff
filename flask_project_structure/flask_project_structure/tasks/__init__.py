@@ -1,0 +1,1 @@
+# tasks文件夹放置celery执行的任务
