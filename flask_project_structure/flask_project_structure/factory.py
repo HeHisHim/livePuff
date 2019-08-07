@@ -31,8 +31,19 @@ def create_app(config: dict) -> Flask:
     _register_blueprint(app)
     _register_extension(app)
 
-    health_check_url = config.get("HEALTH_CHECK_URL")
-    if health_check_url:
-        _register_health_check(app, health_check_url)
-
     return app
+
+def setup_logging(config) -> None:
+    basic_level = config.get("LOG_LEVEL", "INFO").upper()
+    logger.setLevel(level=basic_level)
+
+    formatter = logging.Formatter(
+        "[%(asctime)s - %(filename)s:%(lineno)d - %(levelname)s/%(process)s] %(message)s"
+    )
+    if logger.hasHandlers():
+        for h in logger.handlers:  # type: logging.Handler
+            h.setFormatter(formatter)
+    else:
+        handler = logging.StreamHandler()
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
