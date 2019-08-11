@@ -10,4 +10,4 @@ setup_logging(get_config())
 
 @app.route("/")
 def hello():
-    return "Hello, Flask!"
+    return "Hello, flask_project_structure!"
