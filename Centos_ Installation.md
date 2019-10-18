@@ -17,7 +17,7 @@
 4. wget https://nginx.org/download/nginx-1.16.0.tar.gz
 5. tar -zxvf nginx-1.16.0.tar.gz / cd nginx-1.16.0
 6. ./configure
-7. make / make install
+7. make && make install
 8. whereis nginx
 
 ## supervisor
