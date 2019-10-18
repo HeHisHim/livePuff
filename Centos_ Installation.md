@@ -42,15 +42,16 @@
 2. tar zxf mongodb-linux-x86_64-4.0.10.tgz
 3. mkdir /usr/local/mongodb
 4. mv mongodb-linux-x86_64-4.0.10/* /usr/local/mongodb
-5. mkdir data / mkdir db
-6. mkdir logs / touch mongo.log
-7. vim mongodb.conf
+5. cd /usr/local/mongodb
+6. mkdir data / cd data / mkdir db
+7. mkdir logs / cd logs / touch mongo.log
+8. vim mongodb.conf
     * dbpath=/usr/local/mongodb/data/db/
     * logpath=/usr/local/mongodb/logs/mongo.log
     * logappend=true
     * port=27017
     * fork=true
-8. ./bin/mongod -f mongodb.conf
+9. ./bin/mongod -f mongodb.conf
 
 ## redis
 1. wget http://download.redis.io/redis-stable.tar.gz
