@@ -63,6 +63,7 @@
 * 设置后台启动: daemonize yes
 * 设置密码: requirepass ***
 * 设置远程连接: 注释 bind
+* 取消保护模式: protected-mode no
 
 ## mariadb
 ### 改源
