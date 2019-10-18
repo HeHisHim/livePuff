@@ -17,12 +17,12 @@ def _register_blueprint(app: Flask) -> None:
     pass
 
 def _register_extension(app: Flask) -> None:
-    mongo.init_app(app, connect=False)
+    mongo.init_app(app)
     mysql.init_app(app)
     redis.init_app(app)
 
 def create_app(config: dict) -> Flask:
-    app = Flask("rqams", static_folder=None)
+    app = Flask("flask_project_structure", static_folder=None)
     app.config.from_mapping(config)
     level = app.config.get("LOG_LEVEL", "INFO").upper()
     logger.setLevel(level=getattr(logging, level))
