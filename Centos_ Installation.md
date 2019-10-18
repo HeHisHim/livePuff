@@ -43,8 +43,8 @@
 3. mkdir /usr/local/mongodb
 4. mv mongodb-linux-x86_64-4.0.10/* /usr/local/mongodb
 5. cd /usr/local/mongodb
-6. mkdir data / cd data / mkdir db
-7. mkdir logs / cd logs / touch mongo.log
+6. mkdir data && cd data && mkdir db
+7. mkdir logs && cd logs && touch mongo.log
 8. vim mongodb.conf
     * dbpath=/usr/local/mongodb/data/db/
     * logpath=/usr/local/mongodb/logs/mongo.log
