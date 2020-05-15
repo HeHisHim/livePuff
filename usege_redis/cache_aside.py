@@ -44,9 +44,7 @@ def write(order_book_id="000001.XSHE"):
 
 
 if "__main__" == __name__:
-    read_data = read()
-    print(read_data, type(read_data))
+    # read_data = read()
+    # print(read_data, type(read_data))
     write_data = write()
     print(write_data, type(write_data))
-    read_data = read()
-    print(read_data, type(read_data))
