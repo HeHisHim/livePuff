@@ -24,9 +24,25 @@ def read(order_book_id="000001.XSHE"):
         return data
     return json.loads(redis_cache)
 
-def write():
-    pass
+def write(order_book_id="000001.XSHE"):
+    redis_client = redisProxy()
+    mongo_client = mongoProxy()
+    try:
+        mongo_client.update_one(
+            {"order_book_id": order_book_id},
+            {"$set": {"symbol": "建设银行", "status": "deleted"}}
+        )
+        data = mongo_client.find_one({"order_book_id": order_book_id}, {"_id": 0})
+    except Exception as identifier:
+        print(str(identifier))
+        return
+    redis_client.set(order_book_id, json.dumps(data))
+    return data
+    
+
 
 if "__main__" == __name__:
     read_data = read()
     print(read_data, type(read_data))
+    # write_data = write()
+    # print(write_data, type(write_data))
