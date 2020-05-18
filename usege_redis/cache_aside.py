@@ -3,7 +3,7 @@ import pymongo
 import json
 
 def redisProxy():
-    client = redis.Redis(host='localhost', port=6379)
+    client = redis.Redis(host='localhost', port=6379, decode_responses=True)
     return client
 
 def mongoProxy():
@@ -35,9 +35,9 @@ def read_proxy(mongo_proxy, redis_proxy, projection, filter_, cache_key, inside_
             if not data:
                 return
             redis_proxy.set(cache_key, json.dumps(data))
-            print("Read from mongo data")
+            print("Read from mongo data: {}".format(data))
             return data
-        print("Read from redis cache")
+        print("Read from redis cache: {}".format(redis_cache))
         return json.loads(redis_cache)
     elif "hash" == cache_type:
         redis_cache = redis_proxy.hvals(cache_key)
@@ -56,7 +56,6 @@ def read_proxy(mongo_proxy, redis_proxy, projection, filter_, cache_key, inside_
             return json.loads(redis_proxy.hget(cache_key, inside_key))
         else:
             return [json.loads(x) for x in redis_cache]
-
 
 
 def write(order_book_id="000001.XSHE"):
@@ -81,10 +80,14 @@ def write_proxy(mongo_proxy, redis_proxy, filter_, update, cache_key, inside_key
             {"$set": update},
             upsert=True
         )
-        if inside_key is not None:
-            redis_proxy.hdel(cache_key, inside_key)
-        else:
+
+        if "string" == cache_type:
             redis_proxy.delete(cache_key)
+        elif "hash" == cache_type:
+            if inside_key is not None:
+                redis_proxy.hdel(cache_key, inside_key)
+            else:
+                redis_proxy.delete(cache_key)
         print("Delete redis cache")
     except Exception as identifier:
         print(str(identifier))
@@ -104,4 +107,4 @@ if "__main__" == __name__:
     read_res = read_proxy(
         mongo_proxy, redis_proxy, {"a": 1}, {"_id": 0}, "doit"
     )
-    print(read_res)
+    print(read_res, type(read_res))
