@@ -9,7 +9,7 @@ def redisProxy():
 def mongoProxy():
     client = pymongo.MongoClient("mongodb://localhost:27017", connect=False)
     database = client.get_database("datahub")
-    return database.get_collection("instruments")
+    return database.get_collection("abc")
 
 # def read(order_book_id="000001.XSHE"):
 #     redis_client = redisProxy()
@@ -26,11 +26,11 @@ def mongoProxy():
 #     print("Read from redis cache")
 #     return json.loads(redis_cache)
 
-def read_proxy(mongo_proxy, redis_proxy, projection, filter_, cache_key, inside_key=None, cache_type="string", **kwagrs):
+def read_proxy(mongo_proxy, redis_proxy, projection, filter_, cache_key, inside_key=None, cache_type="string", **kwargs):
     if "string" == cache_type:
         redis_cache = redis_proxy.get(cache_key)
         if redis_cache is None:
-            sort = kwagrs.get(sort)
+            sort = kwargs.get("sort")
             data = mongo_proxy.find_one(projection, filter_, sort=sort)
             if not data:
                 return
@@ -42,11 +42,11 @@ def read_proxy(mongo_proxy, redis_proxy, projection, filter_, cache_key, inside_
     elif "hash" == cache_type:
         redis_cache = redis_proxy.hvals(cache_key)
         if redis_cache is None:
-            sort = kwagrs.get(sort)
+            sort = kwargs.get("sort")
             data = list(mongo_proxy.find(projection, filter_, sort=sort))
             if not data:
                 return
-            target = kwagrs.get("target")
+            target = kwargs.get("target")
             for x in data:
                 redis_proxy.hset(cache_key, {data[target]: json.dumps(data)})
             print("Read from mongo data")
@@ -73,14 +73,35 @@ def write(order_book_id="000001.XSHE"):
         print(str(identifier))
         return
     return "ok"
+
+def write_proxy(mongo_proxy, redis_proxy, filter_, update, cache_key, inside_key=None, cache_type="string", **kwagrs):
+    try:
+        mongo_proxy.update_one(
+            filter_,
+            {"$set": update},
+            upsert=True
+        )
+        if inside_key is not None:
+            redis_proxy.hdel(cache_key, inside_key)
+        else:
+            redis_proxy.delete(cache_key)
+        print("Delete redis cache")
+    except Exception as identifier:
+        print(str(identifier))
+        return
+    return "ok"
     
 
 
 if "__main__" == __name__:
-    # read_data = read()
-    # print(read_data, type(read_data))
-    # write_data = write()
-    # print(write_data, type(write_data))
+    mongo_proxy = mongoProxy()
     redis_proxy = redisProxy()
-    read_data = read_proxy(None, redis_proxy, None, None, "latest_nv_date", None, cache_type="hash")
-    print(read_data, type(read_data))
+    # write_res = write_proxy(
+    #     mongo_proxy, redis_proxy, {"a": 1}, {"b": 11, "c": 12}, "doit"
+    # )
+    # print(write_res)
+
+    read_res = read_proxy(
+        mongo_proxy, redis_proxy, {"a": 1}, {"_id": 0}, "doit"
+    )
+    print(read_res)
