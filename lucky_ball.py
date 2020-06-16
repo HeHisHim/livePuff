@@ -33,7 +33,7 @@ def cal_date(dt_text):
     year, month, day = dt.year, dt.month, dt.day
     dt_key = year * 10000 + month * 100 + day
 
-    return dt_key, which_day
+    return str(dt_key), which_day
 
 
 def cal_ball(ball_info):
@@ -61,12 +61,19 @@ def count_in_dict():
 
 
 def analysis():
+    ex = []
+    ex_map = defaultdict(int)
     all_in = count_in_dict()
     df = pd.DataFrame(all_in)
     df = df.T
-    # print(df)
-    print(df[df["which_day"] == "Tuesday"]["blue"].value_counts())
-    print(len(df[df["which_day"] == "Tuesday"]))
+    # df = df[df.index.str.contains("16")]
+    print(df)
+    for _ in list(df.red):
+        ex.extend(_)
+    ex_set = set(ex)
+    for _ in ex_set:
+        ex_map[_] = ex.count(_)
+    print(sorted(ex_map.items(), key=lambda x: x[1], reverse=True))
 
 
 if __name__ == "__main__":
