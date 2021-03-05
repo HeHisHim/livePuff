@@ -1,0 +1,1 @@
+https://anguswg.github.io/simple_blog/%E7%BC%96%E7%A8%8B/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/
