@@ -12,7 +12,7 @@ def binary_chop_recursive(arr, data):
         return False
     mid = length // 2
     if arr[mid] > data:
-        return binary_chop(arr[0:mid], data)
+        return binary_chop(arr[:mid-1], data)
     elif arr[mid] < data:
         return binary_chop(arr[mid+1:], data)
     else:
