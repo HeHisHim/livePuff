@@ -1,6 +1,7 @@
 import socket
 import asyncio
 import click
+import time
 
 
 @click.group()
@@ -14,11 +15,12 @@ async def server(loop, address):
     sock.bind(address)
     sock.listen(1)
     sock.setblocking(False)
+    print("Server Start")
     while True:
         client, address = await loop.sock_accept(sock)
         print("connect from ", address)
-        # loop.create_task(handler(loop, client))
-        await handler(loop, client)
+        loop.create_task(handler(loop, client))  # 再次create_task, 相当于loop有server(), handler()两个协程函数. 遇到await会交出主动权去处理server或者handler
+        # await handler(loop, client) # 如果这样调用, loop里面相当于只有一个协程函数, 相当于同步调用. 会阻塞在handler
 
 
 async def handler(loop, client):
@@ -46,14 +48,14 @@ def launch_server():
 def launch_client():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(("0.0.0.0", 8080))
-    client.send(b"hello")
     while True:
+        client.send(b"hello")
+        time.sleep(0.5)
         data = client.recv(1024)
-        if data:
-            print(data)
-        else:
+        if not data:
             break
-    client.close()
+        print(data)
+    client.shutdown()
 
 
 if "__main__" == __name__:
