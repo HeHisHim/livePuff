@@ -27,7 +27,6 @@ if "__main__" == __name__:
         print(arr)
         arr_ = sorted(arr)
         qsort(arr)
-        assert arr == arr_
         print(arr)
         print(arr_)
-        
+        assert arr == arr_
