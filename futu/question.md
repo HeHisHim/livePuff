@@ -7,3 +7,5 @@
 7. 偏函数应用场景
 8. AOP - 面向切面编程(其实就是问装饰器) - https://www.jianshu.com/p/4c588eec1be1
 9. 面向对象, 面向过程, 函数式编程有什么区别
+
+[answer.md](./answer.md)
