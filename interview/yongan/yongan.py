@@ -14,7 +14,6 @@ def record_time(func):
 
 
 # 写一个洗牌程序 不用random.shuffle()实现
-@record_time
 def shuffle(arr):
     res = []
     length = len(arr)
