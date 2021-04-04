@@ -22,6 +22,14 @@
     * 两个对象互相引用, ob1 = list(), ob2 = list(), ob1.append(ob2), ob2.append(ob1)
     * 此时无法通过引用计数来回收内存, 必须使用标记清除算法来释放内存
 ## **`编程应用`**
-## **`循环引用如何处理`**
-## **`使用建议`**
+* sys.getrefcount(obj) 返回被引用次数, 该函数会使得实际调用值 + 1
+* gc.collect() 返回此次回收的不可达对象个数
+* gc.get_threshold() 返回各代的回收阈值
+* gc.set_threshold(t0, t1, t2) 设置各代阈值, 特别的gc.set_threshold(0)为禁用gc
+* gc.garbage 返回不可达且无法被回收的对象列表
+* gc.get_referents(*obj) 返回obj指向的对象
+* gc.get_referrers(*obj) 返回所有指向obj的对象
 ## **`触发机制`**
+* 达到垃圾回收阈值, python自动回收
+* 手动执行gc.collect()
+* python虚拟机退出时
