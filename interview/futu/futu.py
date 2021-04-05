@@ -3,17 +3,15 @@ import time
 import multiprocessing
 
 class SingleTon:
-    x = 1
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_instance"):
+            print("not hasattr")
             cls._instance = object().__new__(cls, *args, **kwargs)
         return cls._instance
 
 def func():
-    x = SingleTon()
-    x.x += 1
-    x.y = 1
-    print(x, id(x), x.x)
+    s = SingleTon()
+    print(id(s))
 
 if "__main__" == __name__:
     # idx = [SingleTon() for _ in range(10)]
@@ -22,9 +20,8 @@ if "__main__" == __name__:
     
     thread_list = list()
     for _ in range(1, 10):
-        _ = multiprocessing.Process(target=func)
-        print(id(_))
-        # _ = threading.Thread(target=func)
+        # _ = multiprocessing.Process(target=func)
+        _ = threading.Thread(target=func)
         _.start()
         thread_list.append(_)
 
