@@ -1,6 +1,6 @@
 import time
 import asyncio
-
+import contextlib
 
 # 写一个装饰器打印函数的运行时间
 def record_time(func):
@@ -55,6 +55,29 @@ def reverse_str(s):
     return "".join(s)
 
 
+class File:
+    def __init__(self, file, mode):
+        self.file = file
+        self.mode = mode
+
+    def __enter__(self, *args, **kwargs):
+        print("__enter__")
+        self.f_obj = open(self.file, mode=self.mode)
+        return self.f_obj
+
+    def __exit__(self, *args, **kwargs):
+        print("__exit__")
+        self.f_obj.close()
+
+@contextlib.contextmanager
+def open_file(file, mode):
+    print("__enter__")
+    f_obj = open(file, mode)
+    yield f_obj
+    print("__exit__")
+    f_obj.close()
+
+
 if "__main__" == __name__:
     # arr = [1, 2, 3, 4, 5]
     # print(shuffle(arr))
@@ -63,4 +86,9 @@ if "__main__" == __name__:
     # loop.run_until_complete(asyncio.wait([task1(), task2(), task3()]))
     # loop.run_until_complete(asyncio.gather(task1(), task2(), task3()))
 
-    print(reverse_str("abcde"))
+    # print(reverse_str("abcde"))
+
+    with File("answer.md", "r") as file:
+        print(file.readline())
+    # with open_file("answer.md", "r") as file:
+    #     print(file.readline())
