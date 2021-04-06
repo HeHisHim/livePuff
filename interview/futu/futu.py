@@ -3,10 +3,10 @@ import time
 import multiprocessing
 
 def synchronized(func):
-    func.__lock__ = threading.Lock()
+    SingleTonLock = threading.Lock()
     def lock_func(*args, **kwargs):
-        print(func.__lock__, id(func.__lock__))
-        with func.__lock__:
+        print(SingleTonLock, id(SingleTonLock))
+        with SingleTonLock:
             return func(*args, **kwargs)
     return lock_func
 
@@ -16,13 +16,13 @@ class SingleTon:
     # 线程锁也必须是单例的
     @synchronized
     def __new__(cls, *args, **kwargs):
-        print(SingleTonLock, id(SingleTonLock))
-        with SingleTonLock:
-            if not hasattr(cls, "_instance"):
-                time.sleep(1)
-                print("not hasattr")
-                cls._instance = object().__new__(cls, *args, **kwargs)
-            return cls._instance
+        # print(SingleTonLock, id(SingleTonLock))
+        # with SingleTonLock:
+        if not hasattr(cls, "_instance"):
+            time.sleep(1)
+            print("not hasattr")
+            cls._instance = object().__new__(cls, *args, **kwargs)
+        return cls._instance
 
 def func():
     s = SingleTon()
