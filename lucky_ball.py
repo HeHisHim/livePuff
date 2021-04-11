@@ -1,10 +1,19 @@
-def printf(num):
-    max_num = 2 * num - 1
-    l = list(range(1, num)) + list(range(num, 0, -1))
-    for _ in l:
-        x = 2 * _ - 1
-        space = (max_num - x) // 2
-        print(space * " " + "*" * x + space * " ")
+def kaigenhao(value, precision):
+    calc_value = value if value > 1 else 1 / value
+    left, right = 0, calc_value
+    import ipdb
+
+    ipdb.set_trace()
+    while right - left > precision:
+        mid = (left + right) / 2
+        if mid * mid == calc_value:
+            break
+        elif mid * mid < calc_value:
+            left, right = mid, right
+        else:
+            left, right = left, mid
+    return (left + right) / 2 if value > 1 else 2 / (left + right)
+
 
 if "__main__" == __name__:
-    printf(8)
+    print(kaigenhao(10, 0.1))
