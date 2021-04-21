@@ -24,3 +24,11 @@ a is not c # True
 # 因为"+"要创建一个新的列表即开辟一个新的内存空间, 还要复制对象
 # 用extend则可以节省内存空间, 也比"+"的操作更快
 ```
+
+### 使用zip把行的列表转换为列的列表
+```
+pitchers = [('Nolan', 'Ryan'), ('Roger', 'Clemens'), ('Schilling', 'Curt')]
+first, second = zip(*pitchers)
+print(first)  # ('Nolan', 'Roger', 'Schilling')
+print(second)  # ('Ryan', 'Clemens', 'Curt')
+```
