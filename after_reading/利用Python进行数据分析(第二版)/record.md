@@ -32,3 +32,18 @@ first, second = zip(*pitchers)
 print(first)  # ('Nolan', 'Roger', 'Schilling')
 print(second)  # ('Ryan', 'Clemens', 'Curt')
 ```
+
+### 柯里化: 部分参数应用
+* 柯里化指的是通过"部分参数应用"从现有函数派生出新函数的计数
+```
+# 如执行两数相加的简单函数
+def add_numbers(x, y):
+    return x + y
+
+# 通过该函数可以派生出新的只有一个参数的函数, add_five. 它对另一个参数加5
+add_five = lambda y: add_numbers(5, y)
+
+# add_numbers的第二个参数称为"柯里化的"(curried), 其实就是定义了一个可以调用现有函数的新函数罢了. 内置的functools.partial函数可将此过程简化
+import functools
+add_five = functools.partial(add_numbers, 5)
+```
