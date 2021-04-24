@@ -47,3 +47,45 @@ add_five = lambda y: add_numbers(5, y)
 import functools
 add_five = functools.partial(add_numbers, 5)
 ```
+
+# **`ch04`**
+### 对Numpy数据子集的修改会直接反映到源数组上, 这意味着数据不会被复制, 视图上的任何修改都会直接反映到源数组上
+```
+numpy_arr = np.arange(10)
+python_arr = list(range(10))
+numpy_part = numpy_arr[5:8].copy()
+python_part = python_arr[5:8]
+numpy_part[0] = 12
+python_part[0] = 12
+print(numpy_arr)  # array([ 0,  1,  2,  3,  4, 12,  6,  7,  8,  9])
+print(python_arr)  # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+* 这是因为Numpy的设计目的是处理大数据, 将数据复制多份就需要考虑性能和内存的问题, 这与设计初衷相背
+* 若需要数据副本, 明确地进行复制操作即可. 如numpy_part = numpy_arr[5:8].copy()
+
+### ndarray的切片
+```
+arr2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+print(arr2d[:2])  # array([[1, 2, 3], [4, 5, 6]]), 选取前两行
+print(arr2d[:2, 1:])  # array([[2, 3], [5, 6]]), 选取前两行, 再选取后两列
+print(arr2d[1, :2])  # array([4, 5]), 选取第二行, 再取前两列
+print(arr2d[:2, 2])  # array([3, 6]), 选取第三列的前两行
+print(arr2d[:, :1])  # array([[1], [4], [7]]), 选取所有行的前一列
+```
+
+### numpy.transpose
+```
+arr = np.arange(6).reshape((2,3))
+print(arr)  # array([[0, 1, 2], [3, 4, 5]])
+arr = arr.transpose((1, 0))
+print(arr)  # array([[0, 3], [1, 4], [2, 5]])
+```
+* transpose((x, y, z, ...))可以理解为arr数组的轴, arr第一个[]为0, 第二个[]为1, 多维则第三个[]为2
+* transpose((1,0))代表将[x][y]置换成[y][x], 即原arr[0][0] = 0, 置换后arr[0][0]还是为0. 而arr[0][1] = 1置换后arr[1][0] = 1. arr[1][0] = 3置换后arr[0][1] = 3. arr[0][2] = 2置换后arr[2][0] = 2
+```
+arr = np.arange(12).reshape((2,2,3))
+print(arr)  # array([[[ 0,  1,  2], [ 3,  4,  5]], [[ 6,  7,  8], [ 9, 10, 11]]])
+arr = arr.transpose((2, 0, 1))
+print(arr)  # array([[[ 0,  3], [ 6,  9]], [[ 1,  4], [ 7, 10]], [[ 2,  5], [ 8, 11]]])
+```
+* transpose((2, 0, 1))代表将[x][y][z]置换成[z][x][y], 如arr[1][0][1] = 7置换为arr[1][1][0] = 7. arr[1][1][0]=9置换为arr[0][1][1] = 9
