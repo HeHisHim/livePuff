@@ -89,3 +89,38 @@ arr = arr.transpose((2, 0, 1))
 print(arr)  # array([[[ 0,  3], [ 6,  9]], [[ 1,  4], [ 7, 10]], [[ 2,  5], [ 8, 11]]])
 ```
 * transpose((2, 0, 1))代表将[x][y][z]置换成[z][x][y], 如arr[1][0][1] = 7置换为arr[1][1][0] = 7. arr[1][1][0]=9置换为arr[0][1][1] = 9
+
+### numpy.where
+* numpy.where是三元表达式x if condition else y的向量版本
+```
+xarr = np.array([1.1, 1.2, 1.3, 1.4, 1.5])
+yarr = np.array([2.1, 2.2, 2.3, 2.4, 2.5])
+cond = np.array([True, False, True, True, False])
+# 假设需要根据cond为True选择xarr, 否则选择yarr. 用列表推导式写法
+res = [(x if z else y) for x, y, z in zip(xarr, yarr, cond)]  # [1.1, 2.2, 1.3, 1.4, 2.5]
+# 列表推导式写法无法处理多维数组的数据, 使用numpy.where能更好的解决这个问题
+res = np.where(cond, xarr, yarr)  # array([1.1, 2.2, 1.3, 1.4, 2.5])
+# where通常用于根据另一个数组而产生一个新的数组, 如将多维数组大于0的值替换为2
+arr = np.random.randn(2, 3, 4)
+np.where(arr>0, 2, arr)
+```
+
+### numpy.dot
+* dot()返回的是两个数组的点积(dot product)
+```
+# 如果处理的是一维数组, 则得到的是两数组的內积(两数组长度必须一致)
+arr = np.arange(5)
+brr = np.arange(5)
+res = np.dot(arr, brr)  # arr.dot(brr)
+print(res)  # 30, a0b0 + a1b1 + ... + a4b4
+
+# 如果是计算二维数组的点积
+arr = np.arange(5, 9).reshape((2, 2))
+brr = np.arange(1, 5).reshape((2, 2))
+res = arr.dot(brr)  # array([[23, 34], [31, 46]]), [[a00b00 + a01b10, a00b01 + a01b11], [a10b00 + a11b10, a10b01 + a11b11]]
+
+# 如果是计算多维数组的点积, arr的行长必须与brr的列长一致
+arr = np.arange(5, 11).reshape((2, 3))
+brr = np.arange(1, 7).reshape((3, 2))
+res = arr.dot(brr)  # array([[ 58,  76], [ 85, 112]])
+```
