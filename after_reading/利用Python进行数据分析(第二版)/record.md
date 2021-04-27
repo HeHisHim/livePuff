@@ -106,7 +106,7 @@ np.where(arr>0, 2, arr)
 ```
 
 ### numpy.dot
-* dot()返回的是两个数组的点积(dot product)
+* dot()返回的是两个数组的点积(dot product), 在python3.5也可用@运算符进行点积计算
 ```
 # 如果处理的是一维数组, 则得到的是两数组的內积(两数组长度必须一致)
 arr = np.arange(5)
@@ -123,4 +123,37 @@ res = arr.dot(brr)  # array([[23, 34], [31, 46]]), [[a00b00 + a01b10, a00b01 + a
 arr = np.arange(5, 11).reshape((2, 3))
 brr = np.arange(1, 7).reshape((3, 2))
 res = arr.dot(brr)  # array([[ 58,  76], [ 85, 112]])
+```
+
+# **`ch05`**
+### pandas.rank
+* 排名(rank)会从 1 开始一直到数组中有效数据的数量. 默认情况下, rank是通过"为各组分配一个平均排名"的方式破坏平级关系的
+```
+obj = pd.Series([7, -5, 7, 4, 2, 0, 4])
+print(obj.rank())
+'''
+0    6.5
+1    1.0
+2    6.5
+3    4.5
+4    3.0
+5    2.0
+6    4.5
+dtype: float64
+'''
+# 出现0.5小数位是因为-5排名1.0. 0排名2.0, 2排名3.0, 出现两个数据4, 可排4.0或5.0, 所以按照平均排名, 4排名4.5. 所以7排名6.5
+
+print(obj.rank(method="first"))
+'''
+0    6.0
+1    1.0
+2    7.0
+3    4.0
+4    3.0
+5    2.0
+6    5.0
+dtype: float64
+'''
+# 如果使用method="first"参数, 则会按照出现顺序进行排名. 不再计算平均值
+# method可选average: 平均排名, min: 分组最小排名, max: 分组最大排名, first: 原始数据顺序排名, dense: 类似min参数, 但是是原rank数据+1
 ```
