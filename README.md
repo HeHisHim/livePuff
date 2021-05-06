@@ -24,6 +24,10 @@ ls --full-time *_jpg_* | sed -n '/2019-07-02/p'
 ll | grep xxx
 ```
 
+### 全局搜索
+```linux
+find / -name xx.xx
+```
 # git
 
 ### 使用git merge --squash合并代码(假设是将feature合并到master)
