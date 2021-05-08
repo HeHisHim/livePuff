@@ -157,3 +157,41 @@ dtype: float64
 # 如果使用method="first"参数, 则会按照出现顺序进行排名. 不再计算平均值
 # method可选average: 平均排名, min: 分组最小排名, max: 分组最大排名, first: 原始数据顺序排名, dense: 类似min参数, 但是是原rank数据+1
 ```
+
+# **`ch07`**
+### Series的map方法
+```
+data = {
+    "food": ["bacon", "pulled pork", "bacon", "Pastrami", "corned beef", "Bacon", "pastrami", "honey ham", "nova lox"], 
+    "ounces": [4, 3, 12, 6, 7.5, 8, 3, 5, 6]
+}
+data = pd.DataFrame(data)
+'''
+          food  ounces
+0        bacon     4.0
+1  pulled pork     3.0
+2        bacon    12.0
+3     Pastrami     6.0
+4  corned beef     7.5
+5        Bacon     8.0
+6     pastrami     3.0
+7    honey ham     5.0
+8     nova lox     6.0
+'''
+# 需要添加一列肉类的来源, 此时可使用Series的map方法映射
+meat_to_animal = { "bacon": "pig", "pulled pork": "pig", "pastrami": "cow", "corned beef": "cow", "honey ham": "pig", "nova lox": "salmon"}
+data["animal"] = data["food"].str.lower().map(meat_to_animal)
+
+'''
+          food  ounces  animal
+0        bacon     4.0     pig
+1  pulled pork     3.0     pig
+2        bacon    12.0     pig
+3     Pastrami     6.0     cow
+4  corned beef     7.5     cow
+5        Bacon     8.0     pig
+6     pastrami     3.0     cow
+7    honey ham     5.0     pig
+8     nova lox     6.0  salmon
+'''
+```
