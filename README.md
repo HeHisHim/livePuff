@@ -73,7 +73,7 @@ $PsHome
 
 #### windows使用Mac键位(https://www.zhihu.com/question/27564773)
 ```
-下载AutoHotKey, 新建ahk文件, 填入一下内容
+下载AutoHotKey, 新建ahk文件, 填入以下内容
 
 $!c::
 	SendInput {Ctrl Down}{c}{Ctrl Up}
