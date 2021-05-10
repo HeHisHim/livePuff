@@ -75,6 +75,8 @@ $PsHome
 ```
 下载AutoHotKey, 新建ahk文件, 填入以下内容
 
+F11::suspend
+
 $!c::
 	SendInput {Ctrl Down}{c}{Ctrl Up}
 Return
