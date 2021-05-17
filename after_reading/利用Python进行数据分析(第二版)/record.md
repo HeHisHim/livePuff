@@ -195,3 +195,39 @@ data["animal"] = data["food"].str.lower().map(meat_to_animal)
 8     nova lox     6.0  salmon
 '''
 ```
+
+# **`ch08`**
+### swaplevel
+* 重新调整某轴上各级别的顺序, swaplevel接受两个级别编号或名称, 返回一个互换了级别的新对象
+```
+frame = pd.DataFrame(np.arange(12).reshape((4, 3)), index=[['a', 'a', 'b', 'b'], [1, 2, 1, 2]], columns=[['Ohio', 'Ohio', ' Colorado'], ['Green', 'Red', 'Green']])
+'''
+     Ohio      Colorado
+    Green Red     Green
+a 1     0   1         2
+  2     3   4         5
+b 1     6   7         8
+  2     9  10        11
+'''
+frame.swaplevel()
+'''
+     Ohio      Colorado
+    Green Red     Green
+1 a     0   1         2
+2 a     3   4         5
+1 b     6   7         8
+2 b     9  10        11
+'''
+# 当索引有别名时, 也可以直接交换索引名
+frame.index.names = ["key1", "key2"]
+frame.swaplevel("key2", "key1")
+'''
+           Ohio      Colorado
+          Green Red     Green
+key2 key1
+1    a        0   1         2
+2    a        3   4         5
+1    b        6   7         8
+2    b        9  10        11
+'''
+```
