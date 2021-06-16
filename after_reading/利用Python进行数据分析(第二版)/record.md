@@ -198,7 +198,7 @@ data["animal"] = data["food"].str.lower().map(meat_to_animal)
 
 # **`ch08`**
 ### swaplevel
-* 重新调整某轴上各级别的顺序, swaplevel接受两个级别编号或名称, 返回一个互换了级别的新对象
+* 重新调整某轴上各级别的顺序, swaplevel接受两个级别编号或名称, 返回一个互换了级别的新对象(注: 当只有一层level时不可使用)
 ```
 frame = pd.DataFrame(np.arange(12).reshape((4, 3)), index=[['a', 'a', 'b', 'b'], [1, 2, 1, 2]], columns=[['Ohio', 'Ohio', ' Colorado'], ['Green', 'Red', 'Green']])
 '''
@@ -229,5 +229,99 @@ key2 key1
 2    a        3   4         5
 1    b        6   7         8
 2    b        9  10        11
+'''
+```
+
+### merge(suffixes=*)
+* merge时处理重叠列名
+```
+left = pd.DataFrame({'key1': ['foo', 'foo', 'bar'], 'key2': ['one', 'two', 'one'], 'lval': [1, 2, 3]})
+right = pd.DataFrame({'key1': ['foo', 'foo', 'bar', 'bar'], 'key2': ['one', 'one', 'one', 'two'], 'rval': [4, 5, 6, 7]})
+
+# left
+'''
+  key1 key2  lval
+0  foo  one     1
+1  foo  two     2
+2  bar  one     3
+'''
+
+# right
+'''
+  key1 key2  rval
+0  foo  one     4
+1  foo  one     5
+2  bar  one     6
+3  bar  two     7
+'''
+
+pd.merge(left, right, on=["key1"])
+# key2为重叠列名, merge默认为列名添加x, y后缀
+'''
+  key1 key2_x  lval key2_y  rval
+0  foo    one     1    one     4
+1  foo    one     1    one     5
+2  foo    two     2    one     4
+3  foo    two     2    one     5
+4  bar    one     3    one     6
+5  bar    one     3    two     7
+'''
+
+pd.merge(left, right, on=["key1"], suffixes=["_left", "_right"])
+# suffixes用于指定附加到左右两个DataFrame对象的重叠列名上的字符串
+'''
+  key1 key2_left  lval key2_right  rval
+0  foo       one     1        one     4
+1  foo       one     1        one     5
+2  foo       two     2        one     4
+3  foo       two     2        one     5
+4  bar       one     3        one     6
+5  bar       one     3        two     7
+'''
+```
+
+### np.where(相当于面向数组的if-else)
+```
+a = pd.Series([np.nan, 2.5, np.nan, 3.5, 4.5, np.nan], index=['f', 'e', 'd', 'c', 'b', 'a'])
+b = pd.Series(np.arange(len(a), dtype=np.float64), index=['f', 'e', 'd', 'c', 'b', 'a'])
+b[-1] = np.nan
+
+# pd.isnull(a)为True的元素, 则用b替代, 否则用a
+np.where(pd.isnull(a), b, a)  # array([0. , 2.5, 2. , 3.5, 4.5, nan])
+```
+
+### combine_first
+* 用相同位置的值填补空元素
+```
+df1 = pd.DataFrame({'a': [1., np.nan, 5., np.nan],  'b': [np.nan, 2., np.nan, 6.], 'c': range(2, 18, 4)})
+df2 = pd.DataFrame({'a': [5., 4., np.nan, 3., 7.], 'b': [np.nan, 3., 4., 6., 8.]})
+
+# df1
+'''
+     a    b   c
+0  1.0  NaN   2
+1  NaN  2.0   6
+2  5.0  NaN  10
+3  NaN  6.0  14
+'''
+
+# df2
+'''
+     a    b
+0  5.0  NaN
+1  4.0  3.0
+2  NaN  4.0
+3  3.0  6.0
+4  7.0  8.0
+'''
+
+df1.combine_first(df2)
+'''
+     a    b     c
+0  1.0  NaN   2.0
+1  4.0  2.0   6.0
+2  5.0  4.0  10.0
+3  3.0  6.0  14.0
+4  7.0  8.0   NaN
 '''
 ```
