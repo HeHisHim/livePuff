@@ -86,3 +86,15 @@
     * Remove test database and access to it? [Y/n] <– 是否删除test数据库, 回车
 
     * Reload privilege tables now? [Y/n] <– 是否重新加载权限表, 回车
+    
+
+## docker [https://www.jianshu.com/p/ce3e5537bea5]
+1. yum install -y yum-utils device-mapper-persistent-data lvm2
+2. yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+3. yum makecache fast
+4. yum -y install docker-ce
+5. service docker start
+6. docker version / docker run hello-world
+
+##  pip换源
+1. pip config set global.index-url https://pypi.douban.com/simple/
