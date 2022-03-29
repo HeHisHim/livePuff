@@ -1,5 +1,6 @@
 # python实现二分查找
 
+
 def binary_chop_recursive(arr, data):
     """
     递归解决二分查找
@@ -12,11 +13,12 @@ def binary_chop_recursive(arr, data):
         return False
     mid = length // 2
     if arr[mid] > data:
-        return binary_chop(arr[:mid-1], data)
+        return binary_chop(arr[: mid - 1], data)
     elif arr[mid] < data:
-        return binary_chop(arr[mid+1:], data)
+        return binary_chop(arr[mid + 1 :], data)
     else:
         return True
+
 
 def binary_chop(arr, data):
     """
@@ -37,6 +39,7 @@ def binary_chop(arr, data):
         else:
             return True
     return False
+
 
 if __name__ == "__main__":
     arr = [58, 23, 72, 14, 70, 81, 61, 10, 80, 42]

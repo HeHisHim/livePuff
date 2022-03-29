@@ -1,9 +1,10 @@
 # 使用property来对类属性进行限制, 实现类似java的get / set方法
 
+
 class Spirit:
     def __init__(self):
         self._speed = 1
-    
+
     def get_speed(self):
         return self._speed
 
@@ -16,9 +17,9 @@ class Spirit:
 
 
 mySpirit = Spirit()
-print(mySpirit.get_speed()) # -- 1
-mySpirit.set_speed(8) # set方法调用
-print(mySpirit.get_speed()) # -- 8
+print(mySpirit.get_speed())  # -- 1
+mySpirit.set_speed(8)  # set方法调用
+print(mySpirit.get_speed())  # -- 8
 
 print("\n")
 
@@ -32,7 +33,7 @@ class Spirit_Use_Property:
         print("I am speed getter")
         return self._speed
 
-    @speed.setter # 使用setter 相当于实现set方法
+    @speed.setter  # 使用setter 相当于实现set方法
     def speed(self, speed):
         print("I am speed setter")
         if isinstance(speed, int) and 0 < speed and speed < 11:
@@ -40,10 +41,8 @@ class Spirit_Use_Property:
             return
         raise ValueError("speed value error")
 
+
 x = Spirit_Use_Property()
 print(x.speed)  # 该处调用打印了I am speed getter
-x.speed = 9     # 该处调用打印了I am speed setter
+x.speed = 9  # 该处调用打印了I am speed setter
 print(x.speed)
-
-
-

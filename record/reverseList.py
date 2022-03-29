@@ -4,6 +4,7 @@ class ListNode:
         self.val = x
         self.next = None
 
+
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
         pre = None
@@ -15,10 +16,12 @@ class Solution:
             cur = next_
         return pre
 
+
 def printLink(head):
     while head:
         print(head.val)
         head = head.next
+
 
 if __name__ == "__main__":
     head = ListNode(0)

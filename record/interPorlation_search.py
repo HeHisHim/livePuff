@@ -1,5 +1,6 @@
 import random
 
+
 def interpolation_search(arr, theKey):
     """
     @param arr 待查列表
@@ -9,7 +10,7 @@ def interpolation_search(arr, theKey):
     low = 0
     high = len(arr) - 1
 
-    while(arr[high] != arr[low] and theKey >= arr[low] and theKey <= arr[high]):
+    while arr[high] != arr[low] and theKey >= arr[low] and theKey <= arr[high]:
         # 根据theKey在low ~ high之间的大概位置来计算再赋值给mid
         mid = low + ((theKey - arr[low]) * (high - low) // (arr[high] - arr[low]))
 
@@ -25,9 +26,10 @@ def interpolation_search(arr, theKey):
     else:
         return -1
 
+
 arr = []
 for _ in range(100):
-	arr.append(random.randint(0, 1000))
+    arr.append(random.randint(0, 1000))
 theKey = arr[19]
 
 x = interpolation_search(arr, theKey)

@@ -1,5 +1,6 @@
 import random
 
+
 def _qsort(arr, left, right):
     if left > right:
         return
@@ -18,8 +19,10 @@ def _qsort(arr, left, right):
     _qsort(arr, left, low - 1)
     _qsort(arr, low + 1, right)
 
+
 def qsort(arr):
     _qsort(arr, 0, len(arr) - 1)
+
 
 if "__main__" == __name__:
     for x in range(10):

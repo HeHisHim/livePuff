@@ -1,5 +1,6 @@
 # 使用两个栈来实现先进先出(FIFO)队列
 
+
 class DoubleStack_Queue:
     def __init__(self):
         self.firstStack = []
@@ -11,7 +12,7 @@ class DoubleStack_Queue:
     def get(self):
         if self.secondStack:
             return self.secondStack.pop()
-        
+
         while self.firstStack:
             self.secondStack.append(self.firstStack.pop())
         else:
@@ -19,6 +20,7 @@ class DoubleStack_Queue:
 
     def qsize(self):
         return len(self.firstStack) + len(self.secondStack)
+
 
 if __name__ == "__main__":
     q = DoubleStack_Queue()

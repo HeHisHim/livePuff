@@ -2,10 +2,12 @@
 
 import random
 
+
 class ListNode:
     def __init__(self, x):
         self.val = x
         self.next = None
+
 
 def merge(one, two):
     head = point = ListNode(-1)
@@ -25,12 +27,14 @@ def merge(one, two):
         point.next = two
     return head.next
 
+
 def printList(head):
     while head:
-        print(head.val, end = " ")
+        print(head.val, end=" ")
         head = head.next
-    
+
     print("")
+
 
 if __name__ == "__main__":
     one = pOne = ListNode(-1)
@@ -53,4 +57,3 @@ if __name__ == "__main__":
     theHead = merge(one.next, two.next)
 
     printList(theHead)
-    
