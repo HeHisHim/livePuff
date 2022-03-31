@@ -24,10 +24,7 @@ def lru_cache(size):
             if len(cache) == size:
                 print("cache size full")
                 cache.popitem(last=False)
-                cache[key] = val
-            else:
-                print("cache size not full")
-                cache[key] = val
+            cache[key] = val
             return val
 
         return wraps
