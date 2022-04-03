@@ -59,3 +59,71 @@ git push origin master:master
 SELECT A.xid, C.yid FROM xtable AS A LEFT JOIN (SELECT B.yid FROM ytable AS B GROUP BY B.yid) AS C ON A.xid = C.yid
 ```
 
+# Windows
+#### 查看PowerShell安装目录
+```
+$PsHome
+```
+
+#### 解决Terminal无法进入virtualenv的报错
+1. 以管理员身份运行PowerShell
+2. 执行get-ExecutionPolicy 回复Restricted, 表示状态是禁止的
+3. 执行set-ExecutionPolicy RemoteSigned
+4. 选择Y, 回车
+
+#### windows使用Mac键位(https://www.zhihu.com/question/27564773)
+```
+下载AutoHotKey, 新建ahk文件, 填入以下内容
+
+F11::suspend
+
+$!c::
+	SendInput {Ctrl Down}{c}{Ctrl Up}
+Return
+$!x::
+	SendInput {Ctrl Down}{x}{Ctrl Up}
+Return
+$!v::
+	SendInput {Ctrl Down}{v}{Ctrl Up}
+Return
+$!a::
+	SendInput {Ctrl Down}{a}{Ctrl Up}
+Return
+$!s::
+	SendInput {Ctrl Down}{s}{Ctrl Up}
+Return
+$!w::
+	SendInput {Ctrl Down}{w}{Ctrl Up}
+Return
+$!z::
+	SendInput {Ctrl Down}{z}{Ctrl Up}
+Return
+$!r::
+	SendInput {Ctrl Down}{r}{Ctrl Up}
+Return
+$!t::
+	SendInput {Ctrl Down}{t}{Ctrl Up}
+Return
+$!q::
+	SendInput {Alt Down}{F4}{Alt Up}
+Return
+$!f::
+	SendInput {Ctrl Down}{f}{Ctrl Up}
+Return
+$!/::
+	SendInput {Ctrl Down}{/}{Ctrl Up}
+Return
+$^a::
+	SendInput {Home}
+Return
+$^e::
+	SendInput {End}
+Return
+$^u::
+	SendInput {Shift Down}{Home}{Shift Up}{Backspace Down}{Backspace Up}
+Return
+$!LButton::
+	SendInput {Ctrl Down}{Click Left}{Ctrl Up}
+Return
+
+```

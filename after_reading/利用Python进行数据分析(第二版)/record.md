@@ -197,42 +197,132 @@ data["animal"] = data["food"].str.lower().map(meat_to_animal)
 '''
 ```
 
-### pandas.cut
-* 为了便于分析, 连续数据常常被离散化或拆分为"面元"(bin). 假设有一组人员数据, 将它们划分为不同的年龄组
+# **`ch08`**
+### swaplevel
+* 重新调整某轴上各级别的顺序, swaplevel接受两个级别编号或名称, 返回一个互换了级别的新对象(注: 当只有一层level时不可使用)
 ```
-ages = [20, 22, 25, 27, 21, 23, 37, 31, 61, 45, 41, 32]
-# 要将数据划分到18-25, 26-35, 35-60, 60以上几个面元, 可以使用pandas.cut函数
-bins = [18, 25, 35, 60, 100]
-cats = pd.cut(ages, bins)
-cats.value_counts()
+frame = pd.DataFrame(np.arange(12).reshape((4, 3)), index=[['a', 'a', 'b', 'b'], [1, 2, 1, 2]], columns=[['Ohio', 'Ohio', ' Colorado'], ['Green', 'Red', 'Green']])
 '''
-(18, 25]     5
-(25, 35]     3
-(35, 60]     3
-(60, 100]    1
-dtype: int64
+     Ohio      Colorado
+    Green Red     Green
+a 1     0   1         2
+  2     3   4         5
+b 1     6   7         8
+  2     9  10        11
+'''
+frame.swaplevel()
+'''
+     Ohio      Colorado
+    Green Red     Green
+1 a     0   1         2
+2 a     3   4         5
+1 b     6   7         8
+2 b     9  10        11
+'''
+# 当索引有别名时, 也可以直接交换索引名
+frame.index.names = ["key1", "key2"]
+frame.swaplevel("key2", "key1")
+'''
+           Ohio      Colorado
+          Green Red     Green
+key2 key1
+1    a        0   1         2
+2    a        3   4         5
+1    b        6   7         8
+2    b        9  10        11
+'''
+```
+
+### merge(suffixes=*)
+* merge时处理重叠列名
+```
+left = pd.DataFrame({'key1': ['foo', 'foo', 'bar'], 'key2': ['one', 'two', 'one'], 'lval': [1, 2, 3]})
+right = pd.DataFrame({'key1': ['foo', 'foo', 'bar', 'bar'], 'key2': ['one', 'one', 'one', 'two'], 'rval': [4, 5, 6, 7]})
+
+# left
+'''
+  key1 key2  lval
+0  foo  one     1
+1  foo  two     2
+2  bar  one     3
 '''
 
-# 如果是传入面元的数量而不是确切的边界, 则pandas会根据数据的最大最小值进行切分
-cats = pd.cut(ages, 4)
-cats.value_counts()
+# right
 '''
-(19.959, 30.25]    6
-(30.25, 40.5]      3
-(40.5, 50.75]      2
-(50.75, 61.0]      1
-dtype: int64
+  key1 key2  rval
+0  foo  one     4
+1  foo  one     5
+2  bar  one     6
+3  bar  two     7
 '''
 
-# pandas.qcut根据样本分位数对数据进行面元划分, 因此可以得到大小基本相等的面元
-cats = pd.qcut(ages, 4)
-cats.value_counts()
-
+pd.merge(left, right, on=["key1"])
+# key2为重叠列名, merge默认为列名添加x, y后缀
 '''
-(19.999, 22.75]    3
-(22.75, 29.0]      3
-(29.0, 38.0]       3
-(38.0, 61.0]       3
-dtype: int64
+  key1 key2_x  lval key2_y  rval
+0  foo    one     1    one     4
+1  foo    one     1    one     5
+2  foo    two     2    one     4
+3  foo    two     2    one     5
+4  bar    one     3    one     6
+5  bar    one     3    two     7
+'''
+
+pd.merge(left, right, on=["key1"], suffixes=["_left", "_right"])
+# suffixes用于指定附加到左右两个DataFrame对象的重叠列名上的字符串
+'''
+  key1 key2_left  lval key2_right  rval
+0  foo       one     1        one     4
+1  foo       one     1        one     5
+2  foo       two     2        one     4
+3  foo       two     2        one     5
+4  bar       one     3        one     6
+5  bar       one     3        two     7
+'''
+```
+
+### np.where(相当于面向数组的if-else)
+```
+a = pd.Series([np.nan, 2.5, np.nan, 3.5, 4.5, np.nan], index=['f', 'e', 'd', 'c', 'b', 'a'])
+b = pd.Series(np.arange(len(a), dtype=np.float64), index=['f', 'e', 'd', 'c', 'b', 'a'])
+b[-1] = np.nan
+
+# pd.isnull(a)为True的元素, 则用b替代, 否则用a
+np.where(pd.isnull(a), b, a)  # array([0. , 2.5, 2. , 3.5, 4.5, nan])
+```
+
+### combine_first
+* 用相同位置的值填补空元素
+```
+df1 = pd.DataFrame({'a': [1., np.nan, 5., np.nan],  'b': [np.nan, 2., np.nan, 6.], 'c': range(2, 18, 4)})
+df2 = pd.DataFrame({'a': [5., 4., np.nan, 3., 7.], 'b': [np.nan, 3., 4., 6., 8.]})
+
+# df1
+'''
+     a    b   c
+0  1.0  NaN   2
+1  NaN  2.0   6
+2  5.0  NaN  10
+3  NaN  6.0  14
+'''
+
+# df2
+'''
+     a    b
+0  5.0  NaN
+1  4.0  3.0
+2  NaN  4.0
+3  3.0  6.0
+4  7.0  8.0
+'''
+
+df1.combine_first(df2)
+'''
+     a    b     c
+0  1.0  NaN   2.0
+1  4.0  2.0   6.0
+2  5.0  4.0  10.0
+3  3.0  6.0  14.0
+4  7.0  8.0   NaN
 '''
 ```

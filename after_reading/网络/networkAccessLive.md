@@ -26,6 +26,7 @@
 
 正片: 04:20
 
+体系结构各层的功能(https://blog.csdn.net/qq_45795744/article/details/123571936)
 1.tcp协议栈层次 04:30
 7层
 应用层

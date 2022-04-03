@@ -1,14 +1,16 @@
 import functools
 import time
 
+
 def ttl_cache(ttl):
     def decorating_function(func):
         cache = {}
+
         @functools.wraps(func)
         def wraps(*args, **kwargs):
             target = object()
             if kwargs:
-                key = args + (repr(sorted(kwargs.items())), )
+                key = args + (repr(sorted(kwargs.items())),)
             else:
                 key = args
             print("key: {}".format(key))
@@ -22,13 +24,15 @@ def ttl_cache(ttl):
             print("miss cache")
             cache[key] = (time.time() + ttl, value)
             return value
+
         return wraps
+
     return decorating_function
 
 
-'''
+"""
 rqdata的ttl_cache装饰器
-'''
+"""
 # def ttl_cache(ttl):
 #     if not isinstance(ttl, int) or not ttl > 0:
 #         raise TypeError("Expected ttl to be a positive integer")
@@ -67,6 +71,7 @@ rqdata的ttl_cache装饰器
 @ttl_cache(30)
 def test_ttl(*args, **kwargs):
     print("test_ttl: {} - {}".format(args, kwargs))
+
 
 if "__main__" == __name__:
     test_ttl(123, bbc=123)

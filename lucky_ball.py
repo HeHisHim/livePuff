@@ -1,9 +1,6 @@
 def kaigenhao(value, precision):
     calc_value = value if value > 1 else 1 / value
     left, right = 0, calc_value
-    import ipdb
-
-    ipdb.set_trace()
     while right - left > precision:
         mid = (left + right) / 2
         if mid * mid == calc_value:
