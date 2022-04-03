@@ -181,6 +181,7 @@ data = pd.DataFrame(data)
 # 需要添加一列肉类的来源, 此时可使用Series的map方法映射
 meat_to_animal = { "bacon": "pig", "pulled pork": "pig", "pastrami": "cow", "corned beef": "cow", "honey ham": "pig", "nova lox": "salmon"}
 data["animal"] = data["food"].str.lower().map(meat_to_animal)
+# data["animal"] = data["food"].map(lambda x: meat_to_animal[x.lower()])
 
 '''
           food  ounces  animal
@@ -193,5 +194,45 @@ data["animal"] = data["food"].str.lower().map(meat_to_animal)
 6     pastrami     3.0     cow
 7    honey ham     5.0     pig
 8     nova lox     6.0  salmon
+'''
+```
+
+### pandas.cut
+* 为了便于分析, 连续数据常常被离散化或拆分为"面元"(bin). 假设有一组人员数据, 将它们划分为不同的年龄组
+```
+ages = [20, 22, 25, 27, 21, 23, 37, 31, 61, 45, 41, 32]
+# 要将数据划分到18-25, 26-35, 35-60, 60以上几个面元, 可以使用pandas.cut函数
+bins = [18, 25, 35, 60, 100]
+cats = pd.cut(ages, bins)
+cats.value_counts()
+'''
+(18, 25]     5
+(25, 35]     3
+(35, 60]     3
+(60, 100]    1
+dtype: int64
+'''
+
+# 如果是传入面元的数量而不是确切的边界, 则pandas会根据数据的最大最小值进行切分
+cats = pd.cut(ages, 4)
+cats.value_counts()
+'''
+(19.959, 30.25]    6
+(30.25, 40.5]      3
+(40.5, 50.75]      2
+(50.75, 61.0]      1
+dtype: int64
+'''
+
+# pandas.qcut根据样本分位数对数据进行面元划分, 因此可以得到大小基本相等的面元
+cats = pd.qcut(ages, 4)
+cats.value_counts()
+
+'''
+(19.999, 22.75]    3
+(22.75, 29.0]      3
+(29.0, 38.0]       3
+(38.0, 61.0]       3
+dtype: int64
 '''
 ```
